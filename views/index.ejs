@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto">
+  <%- include('./components/head.ejs',{title:"All",index:true}) %>
+
+  <body>
+    <%- include('./components/dark-light.ejs') %>
+
+    <main class="d-flex flex-nowrap">
+      <%- include('./components/sidebar.ejs', {currentPage: "index" }) %>
+
+      <section class="w-100">
+        <%- include('./components/navbar.ejs') %>
+
+        <table
+          style="width: 99%;"
+          class="text-center mx-auto table mt-5 table-striped table-bordered"
+        >
+          <thead>
+            <tr>
+              <% const heads = [ "#", "Full Name", "Gender", "Country", "Age",
+              "Last updated", "Action", ]; heads.forEach(head=> { %>
+              <th scope="col">
+                <%= head %>
+              </th>
+              <% }) %>
+            </tr>
+          </thead>
+          <tbody>
+            <% if(users.length !==0){ users.forEach((user,i)=> { %>
+            <tr>
+              <th scope="row">
+                <%= i+1 %>
+              </th>
+              <td>
+                <%= user.firstName +' '+ user.lastName%>
+              </td>
+              <td><%= user.age %></td>
+              <td><%= user.country %></td>
+              <td><%= user.gender %></td>
+              <td><%= moment(user.updatedAt).fromNow() %></td>
+              <td>
+                <a
+                  data-bs-toggle="tooltip"
+                  data-bs-title="View details"
+                  data-bs-placement="top"
+                  class="btn btn-primary btn-sm"
+                  href="/view/<%= user._id %>"
+                  ><i class="bi bi-eye"></i
+                ></a>
+
+                <a
+                  data-bs-toggle="tooltip"
+                  data-bs-title="Edit user"
+                  data-bs-placement="top"
+                  class="btn btn-primary btn-sm"
+                  href="/edit/<%= user._id %>"
+                >
+                  <i class="bi bi-pencil"></i>
+                </a>
+                <form
+                  class="d-inline"
+                  action="/delete/<%= user._id %>?_method=DELETE"
+                  method="post"
+                >
+                  <button
+                    data-bs-toggle="tooltip"
+                    data-bs-title="Delete user"
+                    data-bs-placement="top"
+                    class="btn btn-danger btn-sm"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </form>
+              </td>
+            </tr>
+            <% })}else{ %>
+            <td colspan="7"><h3>no</h3></td>
+            <% } %>
+          </tbody>
+        </table>
+      </section>
+    </main>
+    <script src="./js/bootstrap.bundle.min.js"></script>
+
+    <script src="./js/sidebars.js"></script>
+
+    <script src="./js/main.js"></script>
+  </body>
+</html>
